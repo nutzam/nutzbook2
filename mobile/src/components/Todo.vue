@@ -2,8 +2,12 @@
     <div>
         <group title='Todo 管理'>
           <x-input :value.sync="todo_content" is-type=text v-on:keyup.enter="todoAdd" placeHolder="请输入内容并回车"></x-input>
+        </group>
+        <group>
           <div v-for="todo in todos">
-            {{ todo.content }}
+            <div class="weui_cell">
+              <div class="weui_cell_ft" @dblclick="todoDelete(todo.id)">{{ todo.content }}</div>
+            </div>
           </div>
         </group>
     </div>
@@ -57,6 +61,11 @@
               return
             }
           }
+        })
+      },
+      todoDelete: function (todoId) {
+        this.$http.delete('/api/todo/delete/' + todoId).then(function () {
+          this.todoList()
         })
       }
     }
